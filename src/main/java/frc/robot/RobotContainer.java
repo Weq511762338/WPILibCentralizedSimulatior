@@ -4,17 +4,33 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.subsystems.Motor;
 
 public class RobotContainer {
-  public RobotContainer() {
-    configureBindings();
-  }
+	XboxController m_driverController = new XboxController(0);
 
-  private void configureBindings() {}
+	Motor m_motor = new Motor();
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+	public RobotContainer() {
+		configureBindings();
+
+		var driveCommand = new RunCommand(
+				() -> m_motor.set(m_driverController.getLeftX() * DriveConstants.kMaxSpeedMetersPerSecond));
+
+		driveCommand.addRequirements(m_motor);
+		m_motor.setDefaultCommand(driveCommand);
+	}
+
+	private void configureBindings() {
+	}
+
+	public Command getAutonomousCommand() {
+		return Commands.print("No autonomous command configured");
+	}
+
 }
