@@ -31,7 +31,7 @@ public class Motor extends SubsystemBase {
 	
 	double m_driveOutput;
 
-	private final FlywheelSim m_driveMotorSim = new FlywheelSim(
+	FlywheelSim m_driveMotorSim = new FlywheelSim(
 		LinearSystemId.identifyVelocitySystem(Constants.DriveConstants.kvVoltSecondsPerMeter, Constants.DriveConstants.kaVoltSecondsSquaredPerMeter),
 		ModuleConstants.kDriveMotorGearbox,
 		ModuleConstants.kDriveGearRatio
@@ -43,16 +43,15 @@ public class Motor extends SubsystemBase {
 		m_encoder = new Encoder(0, 1);
 		m_encoderSim = new EncoderSim(m_encoder);		    
 
-		m_encoder.setDistancePerPulse(ModuleConstants.kDriveEncoderDistancePerPulse);
+		// m_encoder.setDistancePerPulse(ModuleConstants.kDriveEncoderDistancePerPulse);
 
 		// m_encoder.setReverseDirection(driveEncoderReversed);
 
 	}
 
 	public void set(double speedMetersPerSecond){
-		// System.out.println(speedMetersPerSecond);
 		m_driveOutput = m_PIDController.calculate(m_encoder.getRate(), speedMetersPerSecond);
-		// m_motor.set(m_driveOutput);
+		m_motor.set(m_driveOutput);
 		m_driveMotorSim.setInputVoltage(m_driveOutput / Constants.DriveConstants.kMaxSpeedMetersPerSecond * RobotController.getBatteryVoltage());
 	}
 
@@ -64,8 +63,11 @@ public class Motor extends SubsystemBase {
 	@Override
 	public void simulationPeriodic(){
 		m_driveMotorSim.update(0.2);
-		SmartDashboard.putNumber("distance", m_encoderSim.getDistance());
-		SmartDashboard.putNumber("output", m_driveOutput);
 		m_encoderSim.setRate(m_driveMotorSim.getAngularVelocityRadPerSec());
+		SmartDashboard.putNumber("sim rate", m_encoderSim.getRate());
+		SmartDashboard.putNumber("rate", m_encoder.getRate());
+		SmartDashboard.putNumber("output", m_driveOutput);
+		SmartDashboard.putNumber("sim angular vel", m_driveMotorSim.getAngularVelocityRPM());
+		SmartDashboard.putNumber("sim current draw amps", m_driveMotorSim.getCurrentDrawAmps());
 	}
 }
