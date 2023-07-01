@@ -5,19 +5,22 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.simWrapper.motors.CANSparkMaxWrapper;
+import frc.robot.Robot;
+import frc.robot.CentralizedSimLib.CANSparkMaxSim;
 
 public class Motor extends SubsystemBase {
 	CANSparkMax m_motor;
-	CANSparkMaxWrapper m_simWrapper;
+	CANSparkMaxSim m_simWrapper = null;
 
 	/** Creates a new Motor. */
 	public Motor() {
-		m_motor = new CANSparkMax(0, MotorType.kBrushless);
-		m_simWrapper = new CANSparkMaxWrapper(m_motor, false);
+			m_motor = new CANSparkMax(0, MotorType.kBrushless);
+
+			SparkMaxRelativeEncoder m_encoder = (SparkMaxRelativeEncoder) m_motor.getEncoder();
 	}
 
 

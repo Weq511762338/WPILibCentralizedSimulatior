@@ -1,4 +1,4 @@
-package frc.robot.simWrapper.motors;
+package frc.robot.CentralizedSimLib;
 
 import com.revrobotics.CANSparkMax;
 
@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.ModuleConstants;
 
-public class CANSparkMaxWrapper {
-
-    boolean m_isSimulation;
+public class CANSparkMaxSim {
 
     // actual motor
     CANSparkMax m_motor;
@@ -31,14 +29,13 @@ public class CANSparkMaxWrapper {
 		ModuleConstants.kDriveGearRatio
 	);
 
-    public CANSparkMaxWrapper(CANSparkMax motor, boolean isSimulation){
+    public CANSparkMaxSim(CANSparkMax motor){
         m_motor = motor;
-
-        m_isSimulation = isSimulation;
 
         m_encoder = new Encoder(0, 1);
 		m_encoderSim = new EncoderSim(m_encoder);	
-
+			
+		
         // setup of all sim obj
         m_encoder.setDistancePerPulse(ModuleConstants.kDriveEncoderDistancePerPulse);
     }
@@ -52,8 +49,6 @@ public class CANSparkMaxWrapper {
 	}
 
     public void simulationPeriodic(){
-        if(!m_isSimulation) return;
-        
 		m_motorSim.update(0.2);
 		m_encoderSim.setRate(m_motorSim.getAngularVelocityRadPerSec());
 		SmartDashboard.putNumber("sim rate", m_encoderSim.getRate());
