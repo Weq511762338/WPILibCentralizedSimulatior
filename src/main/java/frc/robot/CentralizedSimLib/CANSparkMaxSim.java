@@ -21,7 +21,7 @@ public class CANSparkMaxSim extends CANSparkMax{
     Encoder m_encoder;
 	EncoderSim m_encoderSim;
 
-    // TODO: is this good? the built-in PID Controller will be used for advanced control directly without calling set(), such as in TrapezoidalProfilingControl: setReference()
+    // TODO: is this good? the built-in PID Controller will be used for advanced control directly without calling set(), such as in TrapezoidalProfilingControl: setReference()f'vfv
     PIDController m_PIDController = new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
 
     FlywheelSim m_motorSim = new FlywheelSim(
@@ -35,6 +35,7 @@ public class CANSparkMaxSim extends CANSparkMax{
 
         m_encoder = new Encoder(0, 1);
 		m_encoderSim = new EncoderSim(m_encoder);	
+        
     }
 
     public CANSparkMaxSim(int deviceId, MotorType type, double encoderDistancePerPulse) {

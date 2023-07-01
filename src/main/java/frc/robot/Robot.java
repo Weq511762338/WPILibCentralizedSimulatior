@@ -70,4 +70,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testExit() {}
+
+  @Override
+  public void simulationInit() {
+    // TODO Auto-generated method stub
+    super.simulationInit();
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    // TODO Auto-generated method stub
+    super.simulationPeriodic();
+  }
 }
