@@ -19,11 +19,11 @@ public class RobotContainer {
 	public RobotContainer() {
 		configureBindings();
 
-		var driveCommand = new RunCommand(
-				() -> m_motor.set(m_driverController.getLeftX() * DriveConstants.kMaxSpeedMetersPerSecond));
+		// var driveCommand = new RunCommand(
+		// 		() -> m_motor.set(m_driverController.getLeftX() * DriveConstants.kMaxSpeedMetersPerSecond));
 
-		driveCommand.addRequirements(m_motor);
-		m_motor.setDefaultCommand(driveCommand);
+		// driveCommand.addRequirements(m_motor);
+		// m_motor.setDefaultCommand(driveCommand);
 	}
 
 	private void configureBindings() {
