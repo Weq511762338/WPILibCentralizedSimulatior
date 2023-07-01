@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.ModuleConstants;
 
@@ -34,27 +35,17 @@ public class CANSparkMaxSim extends CANSparkMax{
         super(deviceId, type);
 
         m_encoder = new Encoder(0, 1);
-		m_encoderSim = new EncoderSim(m_encoder);	
-        
+		m_encoderSim = new EncoderSim(m_encoder);
     }
 
     public CANSparkMaxSim(int deviceId, MotorType type, double encoderDistancePerPulse) {
         this(deviceId, type);
 
-        // TODO: check if this should be called by encoder or encoderSim. Change the disPerPulse and see if anything changes?
         m_encoder.setDistancePerPulse(encoderDistancePerPulse);
-    }
-
-
-    @Override
-    public double get() {
-        // TODO Auto-generated method stub
-        return super.get();
     }
 
     @Override
     public void set(double speed) {
-
         double driveOutput = m_PIDController.calculate(m_encoder.getRate(), speed);
 		// set the output on actual devices
         super.set(driveOutput);
@@ -62,15 +53,16 @@ public class CANSparkMaxSim extends CANSparkMax{
 		m_motorSim.setInputVoltage(driveOutput / Constants.DriveConstants.kMaxSpeedMetersPerSecond * RobotController.getBatteryVoltage());
     }
 
-    @Override
-    public void stopMotor() {
-        // TODO Auto-generated method stub
-        super.stopMotor();
-    }
-
     public void simulationPeriodic(){
+        m_motorSim.update(0.2);
+		m_encoderSim.setDistance(m_encoderSim.getDistance() + 0.2*m_encoderSim.getRate());
+
+        m_encoderSim.setRate(m_motorSim.getAngularVelocityRadPerSec());
         
+		SmartDashboard.putNumber("sim rate", m_encoderSim.getRate());
+		SmartDashboard.putNumber("rate", m_encoder.getRate());
+		SmartDashboard.putNumber("sim angular rad per sec", m_motorSim.getAngularVelocityRadPerSec());
+		SmartDashboard.putNumber("distance", m_encoder.getDistance());
+        SmartDashboard.putNumber("sim distance", m_encoderSim.getDistance());
     }
-
-
 }

@@ -20,7 +20,7 @@ public class RobotContainer {
 		configureBindings();
 
 		var driveCommand = new RunCommand(
-				() -> m_motor.set(m_driverController.getLeftX() * DriveConstants.kMaxSpeedMetersPerSecond));
+				() -> m_motor.set(m_driverController.getLeftX()));
 
 		driveCommand.addRequirements(m_motor);
 		m_motor.setDefaultCommand(driveCommand);

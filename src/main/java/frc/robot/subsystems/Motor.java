@@ -4,29 +4,32 @@
 
 package frc.robot.subsystems;
 
+import java.lang.constant.Constable;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import frc.robot.Robot;
-import frc.robot.CentralizedSimLib.CANSparkMaxSimReference;
+import frc.robot.CentralizedSimLib.CANSparkMaxSim;
 
 public class Motor extends SubsystemBase {
 	CANSparkMax m_motor;
-	CANSparkMaxSimReference m_simWrapper = null;
 
 	/** Creates a new Motor. */
 	public Motor() {
+		
+		if(Robot.isSimulation())
+			m_motor = new CANSparkMaxSim(0, MotorType.kBrushless, Constants.ModuleConstants.kDriveEncoderDistancePerPulse);
+		else
 			m_motor = new CANSparkMax(0, MotorType.kBrushless);
-
-			SparkMaxRelativeEncoder m_encoder = (SparkMaxRelativeEncoder) m_motor.getEncoder();
 	}
 
 
 	public void set(double d){
-		// this is also going to set the speed of acutal motor
-		m_simWrapper.set(d);
+		m_motor.set(d);
 	}
 
 	@Override
@@ -36,6 +39,7 @@ public class Motor extends SubsystemBase {
 
 	@Override
 	public void simulationPeriodic(){
-		m_simWrapper.simulationPeriodic();
+		CANSparkMaxSim sparkSim = (CANSparkMaxSim) m_motor;
+		sparkSim.simulationPeriodic();
 	}
 }
