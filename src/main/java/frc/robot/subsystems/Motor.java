@@ -10,11 +10,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
-import frc.robot.CentralizedSimLib.CANSparkMaxSim;
+import frc.robot.CentralizedSimLib.CANSparkMaxSimReference;
 
 public class Motor extends SubsystemBase {
 	CANSparkMax m_motor;
-	CANSparkMaxSim m_simWrapper = null;
+	CANSparkMaxSimReference m_simWrapper = null;
 
 	/** Creates a new Motor. */
 	public Motor() {
